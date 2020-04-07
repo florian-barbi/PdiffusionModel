@@ -1,0 +1,528 @@
+
+#########################NEED TO WORK IN C:/######################
+
+#Packages
+#install.packages("usethis")
+#install.packages("devtools")
+#install.packages("roxygen2")
+//storage.slu.se/Home$
+library(usethis)
+library(devtools)
+library(roxygen2)
+
+#Arborescence de ficher
+mydir<-"C:/R/MyPackage"
+mypackage <- "Ppool"
+path<-file.path(mydir, mypackage)
+unlink(path, recursive=TRUE)
+
+my_description<-list("Title" = "P pool modeling R package",
+                     "Version" ="0.0",
+                     "Authors@R"= "person('Florian', 'Barbi', email = 'florian.barbi@slu.se', role = c('aut', 'cre'))",
+                     "Description" = "basis R functions to model P pool in soil",
+                     "License" = "GPL-3"
+                     )
+
+create_package(path, my_description, open=FALSE)
+
+
+
+
+Model_Initial<-function(Cb,KfL,KfS,Yi,Dk,Diff){
+
+Empty<-0
+TS1<-c()
+TS1[1]<-Empty
+QS1<-c()
+QS1[1]<-Empty
+CS1<-c()
+CS1[1]<-Empty
+
+TS2<-c()
+TS2[1]<-Empty
+QS2<-c()
+QS2[1]<-Empty
+CS2<-c()
+CS2[1]<-Empty
+
+TS3<-c()
+TS3[1]<-Empty
+QS3<-c()
+QS3[1]<-Empty
+CS3<-c()
+CS3[1]<-Empty
+
+TS4<-c()
+TS4[1]<-Empty
+QS4<-c()
+QS4[1]<-Empty
+CS4<-c()
+CS4[1]<-Empty
+
+TS5<-c()
+TS5[1]<-Empty
+QS5<-c()
+QS5[1]<-Empty
+CS5<-c()
+CS5[1]<-Empty
+
+TS6<-c()
+TS6[1]<-Empty
+QS6<-c()
+QS6[1]<-Empty
+CS6<-c()
+CS6[1]<-Empty
+
+TS7<-c()
+TS7[1]<-Empty
+QS7<-c()
+QS7[1]<-Empty
+CS7<-c()
+CS7[1]<-Empty
+
+TS8<-c()
+TS8[1]<-Empty
+QS8<-c()
+QS8[1]<-Empty
+CS8<-c()
+CS8[1]<-Empty
+
+TL<-c()
+TL[1]<-Empty
+QL<-c()
+QL[1]<-Empty
+
+DS1<-c()
+DS1[1]<-Empty
+DS2<-c()
+DS2[1]<-Empty
+DS3<-c()
+DS3[1]<-Empty
+DS4<-c()
+DS4[1]<-Empty
+DS5<-c()
+DS5[1]<-Empty
+DS6<-c()
+DS6[1]<-Empty
+DS7<-c()
+DS7[1]<-Empty
+DS8<-c()
+DS8[1]<-Empty
+
+Cb0<-Cb/mol
+Cb<-c()
+Cb[1]<-Cb0
+
+#Freundlich parameter
+n<-0.35
+
+
+#DiS[i]<-DiS*10^(-0.8*([i]-1))
+DiS1<-Diff
+DiS2<-DiS1*10^(-Dk*1)
+DiS3<-DiS1*10^(-Dk*2)
+DiS4<-DiS1*10^(-Dk*3)
+DiS5<-DiS1*10^(-Dk*4)
+DiS6<-DiS1*10^(-Dk*5)
+DiS7<-DiS1*10^(-Dk*6)
+DiS8<-DiS1*10^(-Dk*7)
+
+time<-seq(0,Yi,by=1)
+
+
+for (y in 1:(length(time)-1)){
+
+{DS1[y+1]=DiS1*(CS1[y]-Cb[y])}
+{DS2[y+1]=DiS2*(CS2[y]-Cb[y])}
+{DS3[y+1]=DiS3*(CS3[y]-Cb[y])}
+{DS4[y+1]=DiS4*(CS4[y]-Cb[y])}
+{DS5[y+1]=DiS5*(CS5[y]-Cb[y])}
+{DS6[y+1]=DiS6*(CS6[y]-Cb[y])}
+{DS7[y+1]=DiS7*(CS7[y]-Cb[y])}
+{DS8[y+1]=DiS8*(CS8[y]-Cb[y])}
+
+{Cb[y+1]=Cb[1]}
+
+{QL[y+1]=KfL*(Cb[y+1]^(n))}
+{TL[y+1]=QL[y+1]}
+
+{CS1[y+1]=CS1[y]-DS1[y+1]}
+{CS2[y+1]=CS2[y]-DS2[y+1]}
+{CS3[y+1]=CS3[y]-DS3[y+1]}
+{CS4[y+1]=CS4[y]-DS4[y+1]}
+{CS5[y+1]=CS5[y]-DS5[y+1]}
+{CS6[y+1]=CS6[y]-DS6[y+1]}
+{CS7[y+1]=CS7[y]-DS7[y+1]}
+{CS8[y+1]=CS8[y]-DS8[y+1]}
+
+{QS1[y+1]=KfS*((CS1[y+1])^(n))}
+{TS1[y+1]=QS1[y+1]+CS1[y+1]/(BkD/1000)}
+{QS2[y+1]=KfS*((CS2[y+1])^(n))}
+{TS2[y+1]=QS2[y+1]+CS2[y+1]/(BkD/1000)}
+{QS3[y+1]=KfS*((CS3[y+1])^(n))}
+{TS3[y+1]=QS3[y+1]+CS3[y+1]/(BkD/1000)}
+{QS4[y+1]=KfS*((CS4[y+1])^(n))}
+{TS4[y+1]=QS4[y+1]+CS4[y+1]/(BkD/1000)}
+{QS5[y+1]=KfS*((CS5[y+1])^(n))}
+{TS5[y+1]=QS5[y+1]+CS5[y+1]/(BkD/1000)}
+{QS6[y+1]=KfS*((CS6[y+1])^(n))}
+{TS6[y+1]=QS6[y+1]+CS6[y+1]/(BkD/1000)}
+{QS7[y+1]=KfS*((CS7[y+1])^(n))}
+{TS7[y+1]=QS7[y+1]+CS7[y+1]/(BkD/1000)}
+{QS8[y+1]=KfS*((CS8[y+1])^(n))}
+{TS8[y+1]=QS8[y+1]+CS8[y+1]/(BkD/1000)}
+}
+
+TotalL<<-TL[Yi]
+SorbedL<<-QL[Yi]
+
+TotalS1<<-TS1[Yi]
+SorbedS1<<-QS1[Yi]
+DissS1<<-CS1[Yi]
+TotalS2<<-TS2[Yi]
+SorbedS2<<-QS2[Yi]
+DissS2<<-CS2[Yi]
+TotalS3<<-TS3[Yi]
+SorbedS3<<-QS3[Yi]
+DissS3<<-CS3[Yi]
+TotalS4<<-TS4[Yi]
+SorbedS4<<-QS4[Yi]
+DissS4<<-CS4[Yi]
+TotalS5<<-TS5[Yi]
+SorbedS5<<-QS5[Yi]
+DissS5<<-CS5[Yi]
+TotalS6<<-TS6[Yi]
+SorbedS6<<-QS6[Yi]
+DissS6<<-CS6[Yi]
+TotalS7<<-TS7[Yi]
+SorbedS7<<-QS7[Yi]
+DissS7<<-CS7[Yi]
+TotalS8<<-TS8[Yi]
+SorbedS8<<-QS8[Yi]
+DissS8<<-CS8[Yi]
+
+CbF<<-Cb[Yi]
+
+modlistI<-list(KfL, KfS, Cb[Yi]*mol, TL[Yi]*mol,
+(TS1[Yi]+TS2[Yi]+TS3[Yi]+TS4[Yi]+TS5[Yi]+TS6[Yi]+TS7[Yi]+TS8[Yi])*mol,
+(TL[Yi]+TS1[Yi]+TS2[Yi]+TS3[Yi]+TS4[Yi]+TS5[Yi]+TS6[Yi]+TS7[Yi]+TS8[Yi])*mol)
+
+TL<<-TL[Yi]*mol
+TP<<-(TL[Yi]+TS1[Yi]+TS2[Yi]+TS3[Yi]+TS4[Yi]+TS5[Yi]+TS6[Yi]+TS7[Yi]+TS8[Yi])*mol
+
+tableI<-data.frame(modlistI)
+colnames(tableI)<-c("KfL", "KfS", "Cb", "Labile", "Stable", "Total P")
+table1<<-tableI
+
+iTS<<-(TS1+TS2+TS3+TS4+TS5+TS6+TS7+TS8)*mol
+iQS<<-(QS1+QS2+QS3+QS4+QS5+QS6+QS7+QS8)*mol
+iCS<<-(CS1+CS2+CS3+CS4+CS5+CS6+CS7+CS8)*mol
+iDS<<-(DS1+DS2+DS3+DS4+DS5+DS6+DS7+DS8)*mol
+
+return(tableI)
+}
+
+
+
+
+Model<-function(Ferti,P,Up,Leach,Y,Dk,Cb,KfL,KfS,Diff){
+
+Empty<-0
+TS1<-c()
+TS1[1]<-TotalS1
+QS1<-c()
+QS1[1]<-SorbedS1
+CS1<-c()
+CS1[1]<-DissS1
+
+TS2<-c()
+TS2[1]<-TotalS2
+QS2<-c()
+QS2[1]<-SorbedS2
+CS2<-c()
+CS2[1]<-DissS2
+
+TS3<-c()
+TS3[1]<-TotalS3
+QS3<-c()
+QS3[1]<-SorbedS3
+CS3<-c()
+CS3[1]<-DissS3
+
+TS4<-c()
+TS4[1]<-TotalS4
+QS4<-c()
+QS4[1]<-SorbedS4
+CS4<-c()
+CS4[1]<-DissS4
+
+TS5<-c()
+TS5[1]<-TotalS5
+QS5<-c()
+QS5[1]<-SorbedS5
+CS5<-c()
+CS5[1]<-DissS5
+
+TS6<-c()
+TS6[1]<-TotalS6
+QS6<-c()
+QS6[1]<-SorbedS6
+CS6<-c()
+CS6[1]<-DissS6
+
+TS7<-c()
+TS7[1]<-TotalS7
+QS7<-c()
+QS7[1]<-SorbedS7
+CS7<-c()
+CS7[1]<-DissS7
+
+TS8<-c()
+TS8[1]<-TotalS8
+QS8<-c()
+QS8[1]<-SorbedS8
+CS8<-c()
+CS8[1]<-DissS8
+
+TL<-c()
+TL[1]<-TotalL
+QL<-c()
+QL[1]<-SorbedL
+
+DS1<-c()
+DS1[1]<-Empty
+DS2<-c()
+DS2[1]<-Empty
+DS3<-c()
+DS3[1]<-Empty
+DS4<-c()
+DS4[1]<-Empty
+DS5<-c()
+DS5[1]<-Empty
+DS6<-c()
+DS6[1]<-Empty
+DS7<-c()
+DS7[1]<-Empty
+DS8<-c()
+DS8[1]<-Empty
+
+Cb0<-Cb/mol
+Cb<-c()
+Cb[1]<-Cb0
+
+F0<-0
+F<-c()
+F[1]<-F0
+
+#Freundlich parameter
+n<-0.35
+KfL
+KfS
+
+#DiS[i]<-DiS*10^(-0.8*([i]-1))
+DiS1<-Diff
+DiS2<-DiS1*10^(-Dk*1)
+DiS3<-DiS1*10^(-Dk*2)
+DiS4<-DiS1*10^(-Dk*3)
+DiS5<-DiS1*10^(-Dk*4)
+DiS6<-DiS1*10^(-Dk*5)
+DiS7<-DiS1*10^(-Dk*6)
+DiS8<-DiS1*10^(-Dk*7)
+
+time<-seq(0,Y,by=1)
+Depth<-0.2
+
+for (i in 1:(length(time)-1)){
+
+{DS1[i+1]=DiS1*(CS1[i]-Cb[i])}
+{DS2[i+1]=DiS2*(CS2[i]-Cb[i])}
+{DS3[i+1]=DiS3*(CS3[i]-Cb[i])}
+{DS4[i+1]=DiS4*(CS4[i]-Cb[i])}
+{DS5[i+1]=DiS5*(CS5[i]-Cb[i])}
+{DS6[i+1]=DiS6*(CS6[i]-Cb[i])}
+{DS7[i+1]=DiS7*(CS7[i]-Cb[i])}
+{DS8[i+1]=DiS8*(CS8[i]-Cb[i])}
+
+{F[i+1]=Ferti*(Up+((P*1e6)/(10000*Depth*BkD))/30970*(BkD/1000))}
+
+{Cb[i+1]=Cb[i]+DS1[i+1]+DS2[i+1]+DS3[i+1]+DS4[i+1]+DS5[i+1]+DS6[i+1]+DS7[i+1]+DS8[i+1] -(Up) +F[i+1] -(Cb[i]*Leach/0.2)}
+
+{QL[i+1]=KfL*(Cb[i+1]^(n))}
+{TL[i+1]=QL[i+1]}
+
+{CS1[i+1]=CS1[i]-DS1[i+1]}
+{CS2[i+1]=CS2[i]-DS2[i+1]}
+{CS3[i+1]=CS3[i]-DS3[i+1]}
+{CS4[i+1]=CS4[i]-DS4[i+1]}
+{CS5[i+1]=CS5[i]-DS5[i+1]}
+{CS6[i+1]=CS6[i]-DS6[i+1]}
+{CS7[i+1]=CS7[i]-DS7[i+1]}
+{CS8[i+1]=CS8[i]-DS8[i+1]}
+
+{QS1[i+1]=KfS*((CS1[i+1])^(n))}
+{TS1[i+1]=QS1[i+1]+CS1[i+1]/(BkD/1000)}
+{QS2[i+1]=KfS*((CS2[i+1])^(n))}
+{TS2[i+1]=QS2[i+1]+CS2[i+1]/(BkD/1000)}
+{QS3[i+1]=KfS*((CS3[i+1])^(n))}
+{TS3[i+1]=QS3[i+1]+CS3[i+1]/(BkD/1000)}
+{QS4[i+1]=KfS*((CS4[i+1])^(n))}
+{TS4[i+1]=QS4[i+1]+CS4[i+1]/(BkD/1000)}
+{QS5[i+1]=KfS*((CS5[i+1])^(n))}
+{TS5[i+1]=QS5[i+1]+CS5[i+1]/(BkD/1000)}
+{QS6[i+1]=KfS*((CS6[i+1])^(n))}
+{TS6[i+1]=QS6[i+1]+CS6[i+1]/(BkD/1000)}
+{QS7[i+1]=KfS*((CS7[i+1])^(n))}
+{TS7[i+1]=QS7[i+1]+CS7[i+1]/(BkD/1000)}
+{QS8[i+1]=KfS*((CS8[i+1])^(n))}
+{TS8[i+1]=QS8[i+1]+CS8[i+1]/(BkD/1000)}
+}
+
+modlist<-list(paste(Ferti,"_",P,sep=""), KfL, KfS, Cb[1]*mol, TotalL*mol,
+(TL[1]+TS1[1]+TS2[1]+TS3[1]+TS4[1]+TS5[1]+TS6[1]+TS7[1]+TS8[1])*mol, 
+TL[Y]*mol,
+(TL[Y]+TS1[Y]+TS2[Y]+TS3[Y]+TS4[Y]+TS5[Y]+TS6[Y]+TS7[Y]+TS8[Y])*mol)
+table<-data.frame(modlist)
+colnames(table)<-c("Ferti", "KfL", "KfS", "Cb_i", "Labile_i", "TotalP_i", "Labile", "TotalP")
+table2<<-table
+
+fTS<<-(TS1+TS2+TS3+TS4+TS5+TS6+TS7+TS8)*mol
+fQS<<-(QS1+QS2+QS3+QS4+QS5+QS6+QS7+QS8)*mol
+fCS<<-(CS1+CS2+CS3+CS4+CS5+CS6+CS7+CS8)*mol
+fDS<<-(DS1+DS2+DS3+DS4+DS5+DS6+DS7+DS8)*mol
+
+list(par(mfrow=c(2,4)),plot(TL), plot(QL), plot(Cb), plot(Cb),
+plot(fTS),plot(fQS),plot(fCS),plot(fDS))
+
+return(table)
+}
+
+
+
+run<-function(factive){
+KfL<-c()
+KfS<-c()
+KfL[1]<-0.01
+KfS[1]<-KfL[1]*((1-factive)/8)/factive
+Cb<-c()
+Cb[1]<-0
+
+for (i in 1:50){
+Cb[i+1]<-Cb[i]+2
+
+for (j in 1:30){
+KfL[j+1]<-KfL[j]+0.002
+KfS[j+1]<-KfL[j+1]*((1-factive)/8)/factive
+
+Model_Initial(Cb[i],KfL[j],KfS[j],Yi,Dk,Diff)
+capture.output(table1,file=output, append=T)
+
+if(Lmin < TL & TL < Lmax & Tmin < TP & TP < Tmax){
+Ferti = 0
+P = 0
+Model(Ferti,P,Up,Leach,Y,Dk,Cb[i],KfL[j],KfS[j],Diff)
+capture.output(table2,file=output2, append=T)
+
+
+Pfunc<-function(){
+P<-c()
+P[1]<-0
+
+for (p in 1:31){
+P[p+1]=P[p]+1
+
+Ferti = 1
+Model(Ferti,P[p],Up,Leach,Y,Dk,Cb[i],KfL[j],KfS[j],Diff)
+capture.output(table2,file=output2, append=T)
+}
+}
+
+Pfunc()
+}
+
+}
+}
+}
+
+
+run2<-function(){
+factive<-c()
+factive[1]<-0
+
+for(f in 1:20){
+factive[f+1]<-factive[f]+0.05
+
+run(factive[f])
+}
+
+#####format table
+tx  <- readLines(output2)
+tx2  <- gsub(pattern = c("Ferti|KfL|KfS|Cb_i|Labile_i|TotalP_i|Labile|TotalP"), replace = "a", x = tx)
+tx3  <- gsub(pattern = "\\s+a", replace = "", x = tx2)
+tx4  <- gsub(pattern = "\\s+", replace = ",", x = tx3)
+
+writeLines(tx4, con="Line_Model_output.txt")
+
+table<- read.table("Line_Model_output.txt",h = F, sep=",")
+colnames(table)<-c("Index", "Ferti", "KfL", "KfS", "Cb_i", "Labile_i", "TotalP_i", "Labile", "TotalP")
+
+table_0_0<-subset(table, Ferti=="0_0")
+for (i in 0:30) assign(paste("table_1_", i, sep=""), (subset(table, Ferti==paste("1_",i,sep="")))) 
+
+#####Labile
+L_0_0<-table_0_0$Labile
+L_1_0<-table_1_0$Labile
+
+LL<-list()
+for (i in 1:30){
+vecname<-paste("L_1_", i, sep="")
+assign(vecname, eval(parse(text=(paste("table_1_",i,"$Labile",sep="")))))
+LL[[i]]<-get(vecname)
+}
+
+table2<-as.data.frame(do.call(rbind, LL))
+table3<-rbind(L_0_0,L_1_0,table2)
+table4<-t(table3)
+
+colnames(table4)<-c("L_0_0","L_1_0",paste("L_1_", (1:30), sep=""))
+table4
+write.table(table4,"FinalOutput.txt",sep=",")
+
+boxplot(table4)
+
+#####Total
+T_0_0<-table_0_0$TotalP
+T_1_0<-table_1_0$TotalP
+
+TT<-list()
+for (i in 1:30){
+vecname<-paste("L_1_", i, sep="")
+assign(vecname, eval(parse(text=(paste("table_1_",i,"$TotalP",sep="")))))
+TT[[i]]<-get(vecname)
+}
+
+table2<-as.data.frame(do.call(rbind, TT))
+table3<-rbind(T_0_0,T_1_0,table2)
+table4T<-t(table3)
+
+colnames(table4T)<-c("T_0_0","T_1_0",paste("T_1_", (1:30), sep=""))
+table4T
+write.table(table4T,"FinalOutput.txt",sep=",")
+
+boxplot(table4T)
+
+par(mfrow=c(2,1))
+boxplot(table4,main="Labile P",col="lightblue")
+boxplot(table4T,main="Total P",col="lightblue")
+
+x11()
+par(mfrow=c(2,1))
+boxplot(table4,main="Labile P",col="lightblue",outline=F)
+boxplot(table4T,main="Total P",col="lightblue",outline=F)
+
+}
+}
+
+
+
+
+
